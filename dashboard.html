@@ -41,6 +41,11 @@
 
     <main class="main-content">
       <div class="container">
+        <div class="panel-tabs">
+          <button class="tab-btn active ceo-only" onclick="showPanel('website')">BuildOne Website</button>
+          <button class="tab-btn" onclick="showPanel('partnerships')">Partnerships</button>
+        </div>
+        <div id="website-panel" class="panel-content">
         <div class="stats-grid">
           <div class="stat-card">
             <h3>Total Users</h3>
@@ -80,21 +85,6 @@
           </section>
 
           <section class="dashboard-section full-width">
-            <h2>Partnerships</h2>
-            <div id="partnerships-editor">
-              <div class="editor-toolbar">
-                <button onclick="formatText('bold')" title="Bold"><b>B</b></button>
-                <button onclick="formatText('italic')" title="Italic"><i>I</i></button>
-                <button onclick="formatText('underline')" title="Underline"><u>U</u></button>
-                <button onclick="formatText('insertUnorderedList')" title="Bullet List">• List</button>
-                <button onclick="formatText('insertOrderedList')" title="Numbered List">1. List</button>
-              </div>
-              <div id="editor" contenteditable="true" class="text-editor"></div>
-              <p class="auto-save-status">Auto-saving...</p>
-            </div>
-          </section>
-
-          <section class="dashboard-section full-width">
             <h2>All Forum Posts</h2>
             <div class="table-container">
               <table class="data-table">
@@ -112,6 +102,24 @@
                   </tr>
                 </tbody>
               </table>
+            </div>
+          </section>
+        </div>
+        </div>
+
+        <div id="partnerships-panel" class="panel-content" style="display: none;">
+          <section class="dashboard-section full-width">
+            <h2>Partnerships</h2>
+            <div id="partnerships-editor">
+              <div class="editor-toolbar">
+                <button onclick="formatText('bold')" title="Bold"><b>B</b></button>
+                <button onclick="formatText('italic')" title="Italic"><i>I</i></button>
+                <button onclick="formatText('underline')" title="Underline"><u>U</u></button>
+                <button onclick="formatText('insertUnorderedList')" title="Bullet List">• List</button>
+                <button onclick="formatText('insertOrderedList')" title="Numbered List">1. List</button>
+              </div>
+              <div id="editor" contenteditable="true" class="text-editor"></div>
+              <p class="auto-save-status" id="save-status">Ready</p>
             </div>
           </section>
         </div>

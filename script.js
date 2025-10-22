@@ -20,6 +20,9 @@ function showDashboard(user) {
   
   if (!hasPermission('all')) {
     document.querySelectorAll('.ceo-only').forEach(el => el.style.display = 'none');
+    showPanel('partnerships');
+  } else {
+    showPanel('website');
   }
   
   loadDashboardData();
@@ -46,34 +49,51 @@ async function loadDashboardData() {
   loadPartnershipContent();
   initAutoSave();
   
-  const posts = await getPosts();
-  if (posts && !posts.error && Array.isArray(posts)) {
-    document.getElementById('total-users').textContent = '-';
-    document.getElementById('active-posts').textContent = posts.length;
-    document.getElementById('forum-topics').textContent = posts.length;
-    document.getElementById('announcements').textContent = '-';
-    
-    const recentPosts = posts.slice(0, 5);
-    const recentPostsList = document.getElementById('recent-posts');
-    recentPostsList.innerHTML = recentPosts.map(post => `
-      <li class="activity-item">
-        <span class="activity-icon">📝</span>
-        <div>
-          <p><strong>${post.title || 'Untitled'}</strong> by ${post.author || 'Anonymous'}</p>
-          <span class="activity-time">${new Date(post.timestamp).toLocaleDateString()}</span>
-        </div>
-      </li>
-    `).join('');
-    
-    const postsTable = document.getElementById('posts-table');
-    postsTable.innerHTML = posts.map(post => `
-      <tr>
-        <td>${post.title || 'Untitled'}</td>
-        <td>${post.author || 'Anonymous'}</td>
-        <td>${new Date(post.timestamp).toLocaleDateString()}</td>
-        <td><button class="btn-small" onclick="deletePostById('${post.id}')">Delete</button></td>
-      </tr>
-    `).join('');
+  try {
+    const posts = await getPosts();
+    if (posts && !posts.error && Array.isArray(posts)) {
+      document.getElementById('total-users').textContent = '-';
+      document.getElementById('active-posts').textContent = posts.length;
+      document.getElementById('forum-topics').textContent = posts.length;
+      document.getElementById('announcements').textContent = '-';
+      
+      const recentPosts = posts.slice(0, 5);
+      const recentPostsList = document.getElementById('recent-posts');
+      if (recentPosts.length > 0) {
+        recentPostsList.innerHTML = recentPosts.map(post => `
+          <li class="activity-item">
+            <span class="activity-icon">📝</span>
+            <div>
+              <p><strong>${post.title || 'Untitled'}</strong> by ${post.author || 'Anonymous'}</p>
+              <span class="activity-time">${new Date(post.timestamp).toLocaleDateString()}</span>
+            </div>
+          </li>
+        `).join('');
+      } else {
+        recentPostsList.innerHTML = '<li class="activity-item"><p>No posts yet</p></li>';
+      }
+      
+      const postsTable = document.getElementById('posts-table');
+      if (posts.length > 0) {
+        postsTable.innerHTML = posts.map(post => `
+          <tr>
+            <td>${post.title || 'Untitled'}</td>
+            <td>${post.author || 'Anonymous'}</td>
+            <td>${new Date(post.timestamp).toLocaleDateString()}</td>
+            <td><button class="btn-small" onclick="deletePostById('${post.id}')">Delete</button></td>
+          </tr>
+        `).join('');
+      } else {
+        postsTable.innerHTML = '<tr><td colspan="4">No posts available</td></tr>';
+      }
+    } else {
+      document.getElementById('recent-posts').innerHTML = '<li class="activity-item"><p>Unable to load posts</p></li>';
+      document.getElementById('posts-table').innerHTML = '<tr><td colspan="4">Unable to load posts</td></tr>';
+    }
+  } catch (error) {
+    console.error('Error loading data:', error);
+    document.getElementById('recent-posts').innerHTML = '<li class="activity-item"><p>Error loading posts</p></li>';
+    document.getElementById('posts-table').innerHTML = '<tr><td colspan="4">Error loading posts</td></tr>';
   }
 }
 
@@ -94,17 +114,28 @@ function loadPartnershipContent() {
 function savePartnershipContent() {
   const content = document.getElementById('editor').innerHTML;
   localStorage.setItem('partnerships-content', content);
-  document.querySelector('.auto-save-status').textContent = 'Saved ✓';
-  setTimeout(() => {
-    document.querySelector('.auto-save-status').textContent = 'Auto-saving...';
-  }, 2000);
+  const status = document.getElementById('save-status');
+  if (status) {
+    status.textContent = 'Saved ✓';
+    status.style.color = '#4caf50';
+    setTimeout(() => {
+      status.textContent = 'Ready';
+      status.style.color = '#888';
+    }, 2000);
+  }
 }
 
 function initAutoSave() {
   const editor = document.getElementById('editor');
-  let timeout;
+  if (!editor) return;
   
+  let timeout;
   editor.addEventListener('input', () => {
+    const status = document.getElementById('save-status');
+    if (status) {
+      status.textContent = 'Saving...';
+      status.style.color = '#bb86fc';
+    }
     clearTimeout(timeout);
     timeout = setTimeout(savePartnershipContent, 1000);
   });
@@ -161,6 +192,26 @@ async function handleFormSubmit(e) {
   closeModal();
   e.target.reset();
   loadDashboardData();
+}
+
+function showPanel(panelName) {
+  document.querySelectorAll('.panel-content').forEach(panel => {
+    panel.style.display = 'none';
+  });
+  
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.classList.remove('active');
+  });
+  
+  if (panelName === 'website') {
+    document.getElementById('website-panel').style.display = 'block';
+    document.querySelectorAll('.tab-btn')[0].classList.add('active');
+  } else if (panelName === 'partnerships') {
+    document.getElementById('partnerships-panel').style.display = 'block';
+    document.querySelectorAll('.tab-btn')[1].classList.add('active');
+    loadPartnershipContent();
+    initAutoSave();
+  }
 }
 
 if (window.location.pathname.endsWith('dashboard.html')) {

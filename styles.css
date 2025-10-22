@@ -526,6 +526,39 @@ button:active {
   transform: translateY(-2px) scale(0.98);
 }
 
+.panel-tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 30px;
+  border-bottom: 2px solid rgba(187, 134, 252, 0.3);
+  padding-bottom: 10px;
+}
+
+.tab-btn {
+  background: rgba(30, 30, 30, 0.6);
+  border: 2px solid #bb86fc;
+  color: #ffffff;
+  padding: 12px 30px;
+  border-radius: 12px 12px 0 0;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.tab-btn.active {
+  background: linear-gradient(135deg, #bb86fc 0%, #7c4dff 100%);
+  box-shadow: 0 0 20px rgba(187, 134, 252, 0.5);
+}
+
+.tab-btn:hover:not(.active) {
+  background: rgba(187, 134, 252, 0.2);
+  transform: translateY(-2px);
+}
+
+.panel-content {
+  animation: slideIn 0.5s ease;
+}
+
 .close {
   color: #bb86fc;
   float: right;
