@@ -1,9 +1,11 @@
 const USERS = {
   bensteels: {
+    password: '24122012',
     role: 'ceo',
     permissions: ['all']
   },
   ethanpatmore: {
+    password: '1012',
     role: 'admin',
     permissions: ['view', 'edit', 'moderate']
   }
@@ -14,12 +16,8 @@ function login(username, password) {
     return { success: false, error: 'Invalid credentials' };
   }
 
-  const envPassword = username === 'bensteels' 
-    ? window.ENV?.ADMIN_PASSWORD_BENSTEELS 
-    : window.ENV?.ADMIN_PASSWORD_ETHANPATMORE;
-
-  if (password === envPassword) {
-    const user = { username, ...USERS[username] };
+  if (password === USERS[username].password) {
+    const user = { username, role: USERS[username].role, permissions: USERS[username].permissions };
     localStorage.setItem('adminUser', JSON.stringify(user));
     return { success: true, user };
   }
