@@ -50,6 +50,40 @@ async function loadDashboardData() {
     document.getElementById('revenue').textContent = `$${stats.revenue || '45,890'}`;
     document.getElementById('support-tickets').textContent = stats.supportTickets || '23';
   }
+  
+  loadPartnershipContent();
+  initAutoSave();
+}
+
+function loadPartnershipContent() {
+  const saved = localStorage.getItem('partnerships-content');
+  if (saved) {
+    document.getElementById('editor').innerHTML = saved;
+  }
+}
+
+function savePartnershipContent() {
+  const content = document.getElementById('editor').innerHTML;
+  localStorage.setItem('partnerships-content', content);
+  document.querySelector('.auto-save-status').textContent = 'Saved ✓';
+  setTimeout(() => {
+    document.querySelector('.auto-save-status').textContent = 'Auto-saving...';
+  }, 2000);
+}
+
+function initAutoSave() {
+  const editor = document.getElementById('editor');
+  let timeout;
+  
+  editor.addEventListener('input', () => {
+    clearTimeout(timeout);
+    timeout = setTimeout(savePartnershipContent, 1000);
+  });
+}
+
+function formatText(command) {
+  document.execCommand(command, false, null);
+  document.getElementById('editor').focus();
 }
 
 function showModal(type) {
@@ -93,4 +127,8 @@ async function handleFormSubmit(e) {
   closeModal();
   e.target.reset();
   loadDashboardData();
+}
+
+if (window.location.pathname.endsWith('dashboard.html')) {
+  window.onload();
 }

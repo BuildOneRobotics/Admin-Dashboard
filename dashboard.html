@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BuildOne Admin Dashboard</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="auth.js"></script>
+  <script src="api.js"></script>
+</head>
+<body>
+  <div class="app">
+    <div id="login-screen" class="login-screen">
+      <div class="login-container">
+        <h1>BuildOne Admin</h1>
+        <form onsubmit="handleLogin(event)">
+          <input type="text" id="username" placeholder="Username" required>
+          <input type="password" id="password" placeholder="Password" required>
+          <p id="login-error" class="error"></p>
+          <button type="submit">Login</button>
+        </form>
+      </div>
+    </div>
+
+    <div id="dashboard-screen" style="display: none;">
+    <header class="header">
+      <div class="container">
+        <div class="admin-header-top">
+          <div>
+            <h1>BuildOne Dashboard</h1>
+            <p class="subtitle">Admin Control Panel</p>
+          </div>
+          <div class="user-info">
+            <p class="welcome-text">Welcome, <span id="user-name"></span></p>
+            <p class="role-badge"><span id="user-role"></span></p>
+            <button class="logout-btn" onclick="handleLogout()">Logout</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="main-content">
+      <div class="container">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <h3>Total Users</h3>
+            <p class="stat-number" id="total-users">1,247</p>
+            <span class="stat-change positive">+12% this month</span>
+          </div>
+          <div class="stat-card">
+            <h3>Active Projects</h3>
+            <p class="stat-number" id="active-projects">89</p>
+            <span class="stat-change positive">+5% this week</span>
+          </div>
+          <div class="stat-card ceo-only">
+            <h3>Revenue</h3>
+            <p class="stat-number" id="revenue">$45,890</p>
+            <span class="stat-change positive">+18% this month</span>
+          </div>
+          <div class="stat-card">
+            <h3>Support Tickets</h3>
+            <p class="stat-number" id="support-tickets">23</p>
+            <span class="stat-change negative">-8% this week</span>
+          </div>
+        </div>
+
+        <div class="dashboard-grid">
+          <section class="dashboard-section">
+            <h2>Quick Actions</h2>
+            <div class="action-buttons">
+              <button onclick="showModal('user')">Add New User</button>
+              <button onclick="showModal('project')">Create Project</button>
+              <button onclick="showModal('announcement')">Send Announcement</button>
+            </div>
+          </section>
+
+          <section class="dashboard-section">
+            <h2>Recent Activity</h2>
+            <ul class="activity-list">
+              <li class="activity-item">
+                <span class="activity-icon">👤</span>
+                <div>
+                  <p><strong>John Doe</strong> joined the platform</p>
+                  <span class="activity-time">2 hours ago</span>
+                </div>
+              </li>
+              <li class="activity-item">
+                <span class="activity-icon">📁</span>
+                <div>
+                  <p><strong>Project Alpha</strong> was completed</p>
+                  <span class="activity-time">5 hours ago</span>
+                </div>
+              </li>
+              <li class="activity-item">
+                <span class="activity-icon">💰</span>
+                <div>
+                  <p>Payment received: <strong>$2,500</strong></p>
+                  <span class="activity-time">1 day ago</span>
+                </div>
+              </li>
+              <li class="activity-item">
+                <span class="activity-icon">🎫</span>
+                <div>
+                  <p>Support ticket <strong>#1234</strong> resolved</p>
+                  <span class="activity-time">2 days ago</span>
+                </div>
+              </li>
+            </ul>
+          </section>
+
+          <section class="dashboard-section full-width">
+            <h2>Partnerships</h2>
+            <div id="partnerships-editor">
+              <div class="editor-toolbar">
+                <button onclick="formatText('bold')" title="Bold"><b>B</b></button>
+                <button onclick="formatText('italic')" title="Italic"><i>I</i></button>
+                <button onclick="formatText('underline')" title="Underline"><u>U</u></button>
+                <button onclick="formatText('insertUnorderedList')" title="Bullet List">• List</button>
+                <button onclick="formatText('insertOrderedList')" title="Numbered List">1. List</button>
+              </div>
+              <div id="editor" contenteditable="true" class="text-editor"></div>
+              <p class="auto-save-status">Auto-saving...</p>
+            </div>
+          </section>
+
+          <section class="dashboard-section full-width ceo-only">
+            <h2>User Management (CEO Only)</h2>
+            <div class="table-container">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Sarah Johnson</td>
+                    <td>sarah@buildone.com</td>
+                    <td><span class="badge admin">Admin</span></td>
+                    <td><span class="status active">Active</span></td>
+                    <td><button class="btn-small">Edit</button></td>
+                  </tr>
+                  <tr>
+                    <td>Mike Chen</td>
+                    <td>mike@buildone.com</td>
+                    <td><span class="badge user">User</span></td>
+                    <td><span class="status active">Active</span></td>
+                    <td><button class="btn-small">Edit</button></td>
+                  </tr>
+                  <tr>
+                    <td>Emma Wilson</td>
+                    <td>emma@buildone.com</td>
+                    <td><span class="badge manager">Manager</span></td>
+                    <td><span class="status inactive">Inactive</span></td>
+                    <td><button class="btn-small">Edit</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <h2 id="modal-title">Add New User</h2>
+      <form id="modal-form" onsubmit="handleFormSubmit(event)">
+        <input type="text" name="title" placeholder="Title" required>
+        <textarea name="content" placeholder="Content..." rows="4" required></textarea>
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

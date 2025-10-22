@@ -422,6 +422,58 @@ button:active {
   margin-bottom: 25px;
 }
 
+#partnerships-editor {
+  margin-top: 20px;
+}
+
+.editor-toolbar {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+  padding: 10px;
+  background: rgba(20, 20, 20, 0.5);
+  border-radius: 12px;
+  flex-wrap: wrap;
+}
+
+.editor-toolbar button {
+  padding: 8px 15px;
+  font-size: 0.9rem;
+  min-width: auto;
+}
+
+.text-editor {
+  background: rgba(30, 30, 30, 0.8);
+  color: #ffffff;
+  border: 2px solid #bb86fc;
+  border-radius: 20px;
+  padding: 20px;
+  min-height: 300px;
+  font-size: 1rem;
+  line-height: 1.6;
+  transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  outline: none;
+  overflow-y: auto;
+}
+
+.text-editor:focus {
+  border-color: #7c4dff;
+  box-shadow: 0 0 30px rgba(187, 134, 252, 0.5);
+}
+
+.text-editor:empty:before {
+  content: 'Start typing your partnership notes here...';
+  color: #888;
+  font-style: italic;
+}
+
+.auto-save-status {
+  margin-top: 10px;
+  font-size: 0.85rem;
+  color: #4caf50;
+  text-align: right;
+}
+
 .close {
   color: #bb86fc;
   float: right;
@@ -460,5 +512,9 @@ button:active {
   
   .user-info {
     align-items: center;
+  }
+  
+  .editor-toolbar {
+    justify-content: center;
   }
 }
