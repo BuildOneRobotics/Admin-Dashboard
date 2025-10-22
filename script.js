@@ -1,4 +1,8 @@
 window.onload = function() {
+  if (document.referrer.includes('index.html') || !document.referrer.includes('dashboard.html')) {
+    localStorage.removeItem('adminUser');
+  }
+  
   const user = getCurrentUser();
   if (!user) {
     showLoginScreen();
