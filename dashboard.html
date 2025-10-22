@@ -44,23 +44,19 @@
         <div class="stats-grid">
           <div class="stat-card">
             <h3>Total Users</h3>
-            <p class="stat-number" id="total-users">1,247</p>
-            <span class="stat-change positive">+12% this month</span>
+            <p class="stat-number" id="total-users">-</p>
           </div>
           <div class="stat-card">
-            <h3>Active Projects</h3>
-            <p class="stat-number" id="active-projects">89</p>
-            <span class="stat-change positive">+5% this week</span>
-          </div>
-          <div class="stat-card ceo-only">
-            <h3>Revenue</h3>
-            <p class="stat-number" id="revenue">$45,890</p>
-            <span class="stat-change positive">+18% this month</span>
+            <h3>Active Posts</h3>
+            <p class="stat-number" id="active-posts">-</p>
           </div>
           <div class="stat-card">
-            <h3>Support Tickets</h3>
-            <p class="stat-number" id="support-tickets">23</p>
-            <span class="stat-change negative">-8% this week</span>
+            <h3>Forum Topics</h3>
+            <p class="stat-number" id="forum-topics">-</p>
+          </div>
+          <div class="stat-card">
+            <h3>Announcements</h3>
+            <p class="stat-number" id="announcements">-</p>
           </div>
         </div>
 
@@ -68,42 +64,17 @@
           <section class="dashboard-section">
             <h2>Quick Actions</h2>
             <div class="action-buttons">
-              <button onclick="showModal('user')">Add New User</button>
-              <button onclick="showModal('project')">Create Project</button>
-              <button onclick="showModal('announcement')">Send Announcement</button>
+              <button onclick="showModal('announcement')">Create Announcement</button>
+              <button onclick="window.open('https://buildonerobotics.vercel.app/forum', '_blank')">View Forum</button>
+              <button onclick="window.open('https://buildonerobotics.vercel.app', '_blank')">View Website</button>
             </div>
           </section>
 
           <section class="dashboard-section">
-            <h2>Recent Activity</h2>
-            <ul class="activity-list">
+            <h2>Recent Posts</h2>
+            <ul class="activity-list" id="recent-posts">
               <li class="activity-item">
-                <span class="activity-icon">👤</span>
-                <div>
-                  <p><strong>John Doe</strong> joined the platform</p>
-                  <span class="activity-time">2 hours ago</span>
-                </div>
-              </li>
-              <li class="activity-item">
-                <span class="activity-icon">📁</span>
-                <div>
-                  <p><strong>Project Alpha</strong> was completed</p>
-                  <span class="activity-time">5 hours ago</span>
-                </div>
-              </li>
-              <li class="activity-item">
-                <span class="activity-icon">💰</span>
-                <div>
-                  <p>Payment received: <strong>$2,500</strong></p>
-                  <span class="activity-time">1 day ago</span>
-                </div>
-              </li>
-              <li class="activity-item">
-                <span class="activity-icon">🎫</span>
-                <div>
-                  <p>Support ticket <strong>#1234</strong> resolved</p>
-                  <span class="activity-time">2 days ago</span>
-                </div>
+                <p>Loading...</p>
               </li>
             </ul>
           </section>
@@ -123,40 +94,21 @@
             </div>
           </section>
 
-          <section class="dashboard-section full-width ceo-only">
-            <h2>User Management (CEO Only)</h2>
+          <section class="dashboard-section full-width">
+            <h2>All Forum Posts</h2>
             <div class="table-container">
               <table class="data-table">
                 <thead>
                   <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Role</th>
-                    <th>Status</th>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Date</th>
                     <th>Actions</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody id="posts-table">
                   <tr>
-                    <td>Sarah Johnson</td>
-                    <td>sarah@buildone.com</td>
-                    <td><span class="badge admin">Admin</span></td>
-                    <td><span class="status active">Active</span></td>
-                    <td><button class="btn-small">Edit</button></td>
-                  </tr>
-                  <tr>
-                    <td>Mike Chen</td>
-                    <td>mike@buildone.com</td>
-                    <td><span class="badge user">User</span></td>
-                    <td><span class="status active">Active</span></td>
-                    <td><button class="btn-small">Edit</button></td>
-                  </tr>
-                  <tr>
-                    <td>Emma Wilson</td>
-                    <td>emma@buildone.com</td>
-                    <td><span class="badge manager">Manager</span></td>
-                    <td><span class="status inactive">Inactive</span></td>
-                    <td><button class="btn-small">Edit</button></td>
+                    <td colspan="4">Loading posts...</td>
                   </tr>
                 </tbody>
               </table>

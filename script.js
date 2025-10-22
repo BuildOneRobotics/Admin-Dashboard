@@ -43,16 +43,45 @@ function handleLogout() {
 }
 
 async function loadDashboardData() {
-  const stats = await getStats();
-  if (stats && !stats.error) {
-    document.getElementById('total-users').textContent = stats.totalUsers || '1,247';
-    document.getElementById('active-projects').textContent = stats.activeProjects || '89';
-    document.getElementById('revenue').textContent = `$${stats.revenue || '45,890'}`;
-    document.getElementById('support-tickets').textContent = stats.supportTickets || '23';
-  }
-  
   loadPartnershipContent();
   initAutoSave();
+  
+  const posts = await getPosts();
+  if (posts && !posts.error && Array.isArray(posts)) {
+    document.getElementById('total-users').textContent = '-';
+    document.getElementById('active-posts').textContent = posts.length;
+    document.getElementById('forum-topics').textContent = posts.length;
+    document.getElementById('announcements').textContent = '-';
+    
+    const recentPosts = posts.slice(0, 5);
+    const recentPostsList = document.getElementById('recent-posts');
+    recentPostsList.innerHTML = recentPosts.map(post => `
+      <li class="activity-item">
+        <span class="activity-icon">📝</span>
+        <div>
+          <p><strong>${post.title || 'Untitled'}</strong> by ${post.author || 'Anonymous'}</p>
+          <span class="activity-time">${new Date(post.timestamp).toLocaleDateString()}</span>
+        </div>
+      </li>
+    `).join('');
+    
+    const postsTable = document.getElementById('posts-table');
+    postsTable.innerHTML = posts.map(post => `
+      <tr>
+        <td>${post.title || 'Untitled'}</td>
+        <td>${post.author || 'Anonymous'}</td>
+        <td>${new Date(post.timestamp).toLocaleDateString()}</td>
+        <td><button class="btn-small" onclick="deletePostById('${post.id}')">Delete</button></td>
+      </tr>
+    `).join('');
+  }
+}
+
+async function deletePostById(id) {
+  if (confirm('Delete this post?')) {
+    await deletePost(id);
+    loadDashboardData();
+  }
 }
 
 function loadPartnershipContent() {
@@ -120,10 +149,15 @@ window.onclick = function(event) {
 async function handleFormSubmit(e) {
   e.preventDefault();
   const formData = new FormData(e.target);
-  const data = Object.fromEntries(formData);
+  const data = {
+    title: formData.get('title'),
+    content: formData.get('content'),
+    author: getCurrentUser().username,
+    timestamp: Date.now()
+  };
   
   await createAnnouncement(data);
-  alert('Form submitted successfully!');
+  alert('Announcement created!');
   closeModal();
   e.target.reset();
   loadDashboardData();
