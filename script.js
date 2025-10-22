@@ -54,12 +54,16 @@ async function loadDashboardData() {
   initAutoSave();
   
   try {
-    const posts = await getPosts();
+    const [posts, stats] = await Promise.all([getPosts(), getStats()]);
+    
+    if (stats && !stats.error) {
+      document.getElementById('total-users').textContent = stats.totalUsers || '-';
+      document.getElementById('active-posts').textContent = stats.activePosts || '0';
+      document.getElementById('forum-topics').textContent = stats.forumTopics || '0';
+      document.getElementById('announcements').textContent = stats.announcements || '0';
+    }
+    
     if (posts && !posts.error && Array.isArray(posts)) {
-      document.getElementById('total-users').textContent = '-';
-      document.getElementById('active-posts').textContent = posts.length;
-      document.getElementById('forum-topics').textContent = posts.length;
-      document.getElementById('announcements').textContent = '-';
       
       const recentPosts = posts.slice(0, 5);
       const recentPostsList = document.getElementById('recent-posts');
