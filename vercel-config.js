@@ -1,0 +1,5 @@
+window.ENV = {
+  ADMIN_PASSWORD_BENSTEELS: process.env.ADMIN_PASSWORD_BENSTEELS,
+  ADMIN_PASSWORD_ETHANPATMORE: process.env.ADMIN_PASSWORD_ETHANPATMORE,
+  API_URL: 'https://buildonerobotics.vercel.app'
+};
