@@ -125,11 +125,15 @@ function savePartnershipContent() {
   }
 }
 
+let autoSaveInitialized = false;
+
 function initAutoSave() {
   const editor = document.getElementById('editor');
-  if (!editor) return;
+  if (!editor || autoSaveInitialized) return;
   
+  autoSaveInitialized = true;
   let timeout;
+  
   editor.addEventListener('input', () => {
     const status = document.getElementById('save-status');
     if (status) {
@@ -203,14 +207,19 @@ function showPanel(panelName) {
     btn.classList.remove('active');
   });
   
+  const activeBtn = document.querySelector(`[data-panel="${panelName}"]`);
+  if (activeBtn) {
+    activeBtn.classList.add('active');
+  }
+  
   if (panelName === 'website') {
     document.getElementById('website-panel').style.display = 'block';
-    document.querySelectorAll('.tab-btn')[0].classList.add('active');
   } else if (panelName === 'partnerships') {
     document.getElementById('partnerships-panel').style.display = 'block';
-    document.querySelectorAll('.tab-btn')[1].classList.add('active');
-    loadPartnershipContent();
-    initAutoSave();
+    setTimeout(() => {
+      loadPartnershipContent();
+      initAutoSave();
+    }, 100);
   }
 }
 
