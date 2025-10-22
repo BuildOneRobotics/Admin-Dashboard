@@ -49,7 +49,7 @@ async function getPosts() {
 }
 
 async function deletePost(id) {
-  return await fetchFromAPI(`/api/posts/${id}`, {
+  return await fetchFromAPI(`/api/delete-post?id=${id}`, {
     method: 'DELETE'
   });
 }
