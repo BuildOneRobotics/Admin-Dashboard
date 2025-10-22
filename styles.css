@@ -474,6 +474,58 @@ button:active {
   text-align: right;
 }
 
+.hero-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.hero-content {
+  text-align: center;
+  max-width: 600px;
+  padding: 60px 40px;
+  background: rgba(30, 30, 30, 0.6);
+  border-radius: 30px;
+  border: 2px solid #bb86fc;
+  box-shadow: 0 10px 40px rgba(187, 134, 252, 0.3);
+  animation: slideIn 1s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.hero-content h1 {
+  font-size: 4rem;
+  margin-bottom: 20px;
+}
+
+.hero-content .subtitle {
+  font-size: 1.5rem;
+  margin-bottom: 40px;
+}
+
+.hero-btn {
+  display: inline-block;
+  background: linear-gradient(135deg, #bb86fc 0%, #7c4dff 100%);
+  color: #ffffff;
+  border: none;
+  padding: 18px 50px;
+  border-radius: 25px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  box-shadow: 0 8px 20px rgba(187, 134, 252, 0.4);
+}
+
+.hero-btn:hover {
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 0 12px 35px rgba(187, 134, 252, 0.6);
+}
+
+.hero-btn:active {
+  transform: translateY(-2px) scale(0.98);
+}
+
 .close {
   color: #bb86fc;
   float: right;
@@ -516,5 +568,13 @@ button:active {
   
   .editor-toolbar {
     justify-content: center;
+  }
+  
+  .hero-content h1 {
+    font-size: 2.5rem;
+  }
+  
+  .hero-content .subtitle {
+    font-size: 1.2rem;
   }
 }
